@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '629501785872',
     projectId: 'hackathum24mun-67',
     storageBucket: 'hackathum24mun-67.firebasestorage.app',
+    iosClientId: '629501785872-ru7op3g9clbagt2a3p91o2tirbugn1ps.apps.googleusercontent.com',
     iosBundleId: 'com.example.synkronizeApp',
   );
 
@@ -72,6 +73,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '629501785872',
     projectId: 'hackathum24mun-67',
     storageBucket: 'hackathum24mun-67.firebasestorage.app',
+    iosClientId: '629501785872-ru7op3g9clbagt2a3p91o2tirbugn1ps.apps.googleusercontent.com',
     iosBundleId: 'com.example.synkronizeApp',
   );
 

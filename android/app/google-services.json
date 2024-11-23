@@ -12,7 +12,12 @@
           "package_name": "com.synkronize.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "629501785872-ag0ntt9fdujo6p4o0htrqicdrat8h062.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCUTK4WrIEDBUFn3XB2Iti-iC2W-9uZowQ"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629501785872-ag0ntt9fdujo6p4o0htrqicdrat8h062.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "629501785872-ru7op3g9clbagt2a3p91o2tirbugn1ps.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.synkronizeApp"
+              }
+            }
+          ]
         }
       }
     }
