@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
 
-class ChatView extends StatelessWidget {
+class ChatView extends StatefulWidget {
   final String sender;
 
   const ChatView({super.key, required this.sender});
 
   @override
+  _ChatViewState createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<ChatView> {
+  final TextEditingController _controller = TextEditingController();
+  bool _isButtonActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      setState(() {
+        _isButtonActive = _controller.text.isNotEmpty;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat with $sender'),
+        title: Text('Chat with ${widget.sender}'),
       ),
       body: SafeArea(
         child: Column(
@@ -29,17 +53,28 @@ class ChatView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
-                        decoration: const InputDecoration(
-                          hintText: 'Type a message',
-                          contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          hintText: 'Aa.',
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200],
                         ),
                       ),
                     ),
+                    const SizedBox(width: 8.0),
                     IconButton(
                       icon: const Icon(Icons.send),
-                      onPressed: () {
+                      color: _isButtonActive ? Colors.blue : Colors.grey,
+                      onPressed: _isButtonActive
+                          ? () {
                         // Send message functionality
-                      },
+                      }
+                          : null,
                     ),
                   ],
                 ),

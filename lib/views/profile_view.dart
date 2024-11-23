@@ -14,29 +14,51 @@ class ProfileView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Profile Picture Placeholder
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey[300],
-              child: Icon(
-                Icons.camera_alt,
-                size: 60,
-                color: Colors.grey[700],
-              ),
+            // Profile Picture Placeholder with Border and Edit Button
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.grey[300],
+                  child: CircleAvatar(
+                    radius: 48,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.camera_alt,
+                      size: 60,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.deepPurple,
+                    child: IconButton(
+                      icon: const Icon(Icons.edit, size: 16, color: Colors.white),
+                      onPressed: () {
+                        // Add edit functionality here
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             // Basic Details
             const Text(
-              'Sarah Johnson',
+              'Sarah',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 10),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Text(
                   'Age: ',
                   style: TextStyle(
@@ -67,47 +89,6 @@ class ProfileView extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 30),
-            // Edit Button
-            ElevatedButton(
-              onPressed: () {
-                // Add edit functionality here
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.deepPurple,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Edit Profile',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            // Additional Details Section
-            OutlinedButton(
-              onPressed: () {
-                // Add functionality to expand or provide further personal information
-              },
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Add more profile details here',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.deepPurple,
-                ),
-              ),
             ),
           ],
         ),
