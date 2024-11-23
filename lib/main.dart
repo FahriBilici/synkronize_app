@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/home', page: () => const HomeView()),
         GetPage(name: '/dating', page: () => const DatingView()),
         GetPage(name: '/social', page: () => const SocialView()),
-        GetPage(name: '/profile', page: () => const ProfileView()),
+        GetPage(name: '/profile', page: () => ProfileView()),
         GetPage(name: '/stake_solana', page: () => const StakeSolanaView()),
       ],
     );

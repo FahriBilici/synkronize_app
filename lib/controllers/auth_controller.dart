@@ -64,6 +64,7 @@ class AuthController extends GetxController {
         Map<String, dynamic> userInfo = {
           "email": userEmail,
           "name": response.userInfo?.name,
+          "profileImageUrl": ""
         };
 
         await firestoreController.saveUserInfo(userInfo);

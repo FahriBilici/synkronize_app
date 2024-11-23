@@ -13,6 +13,7 @@ class FirestoreController extends GetxController {
       'email': userInfo['email'],
       'name': userInfo['name'],
       'createdAt': FieldValue.serverTimestamp(),
+      'profileImageUrl': userInfo['profileImageUrl'],
       // Add other fields you want to save
     });
     userId.value = docId; // Store the user ID
