@@ -52,19 +52,22 @@ class AuthController extends GetxController {
       );
       privateKey.value = response.privKey;
 
-      // Extract user info from the response
-      Map<String, dynamic> userInfo = {
-        "email": response.userInfo?.email,
-        "name": response.userInfo?.name,
-        "verifierId": response.userInfo?.verifierId,
-        // Include other fields as needed
-      };
+      String? userEmail = response.userInfo?.email;
 
-      // Save user info to Firestore
-      String userId = await firestoreController.saveUserInfo(userInfo);
-      // Store userId for later use if needed
+      // Check if user exists
+      bool userExists =
+          await firestoreController.checkUserExists(userEmail ?? '');
 
-      // Navigate to home page after successful login
+      if (!userExists) {
+        // Only save if user doesn't exist
+        Map<String, dynamic> userInfo = {
+          "email": userEmail,
+          "name": response.userInfo?.name,
+        };
+
+        await firestoreController.saveUserInfo(userInfo);
+      }
+
       Get.offAllNamed('/home');
     } catch (e) {
       print(e);

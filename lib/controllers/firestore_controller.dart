@@ -44,4 +44,14 @@ class FirestoreController extends GetxController {
   Stream<QuerySnapshot> getData(String collection) {
     return firestore.collection(collection).snapshots();
   }
+
+  Future<bool> checkUserExists(String email) async {
+    QuerySnapshot query = await firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .limit(1)
+        .get();
+
+    return query.docs.isNotEmpty;
+  }
 }
