@@ -10,15 +10,14 @@ import 'views/dating_view.dart';
 import 'views/social_view.dart';
 import 'views/profile_view.dart';
 import 'views/stake_solana_view.dart';
+import 'controllers/firestore_controller.dart';
+import 'bindings/auth_binding.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  final authController = Get.put(AuthController());
-  await authController.initWeb3Auth();
 
   runApp(const MyApp());
 }
@@ -34,7 +33,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/onboarding',
+      initialBinding: AuthBinding(), // Add this line
+      initialRoute: '/login',
       getPages: [
         GetPage(name: '/onboarding', page: () => const OnboardingView()),
         GetPage(name: '/login', page: () => const LoginView()),

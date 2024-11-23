@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import '../controllers/auth_controller.dart';
+import '../controllers/firestore_controller.dart';
 
-class AuthBinding implements Bindings {
+class AuthBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => AuthController());
+    Get.put(FirestoreController(), permanent: true);
+    Get.put(AuthController(), permanent: true);
   }
 }
