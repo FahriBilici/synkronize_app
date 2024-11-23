@@ -16,7 +16,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  Get.put(AuthController()); // Initialize AuthController
+  final authController = Get.put(AuthController());
+  await authController.initWeb3Auth();
 
   runApp(const MyApp());
 }

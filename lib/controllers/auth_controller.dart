@@ -1,70 +1,74 @@
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/material.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/web3auth_flutter.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
+
+import 'dart:io';
 
 class AuthController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
   final RxBool isLoading = false.obs;
-  Rx<User?> user = Rx<User?>(null);
+  Rx<String?> privateKey = Rx<String?>(null);
 
   @override
   void onInit() {
     super.onInit();
-    user.bindStream(_auth.authStateChanges());
+  }
+
+  Future<void> initWeb3Auth() async {
+    Uri redirectUrl;
+    String clientId =
+        'BAqA-_5w1WVADgQrTeEyTD5OaHwLbjVdeEzdzZDySXps0kRldbxyCmUYUKEuDcIlhS4MMqKz98xh5oAsKv0U46o';
+
+    if (Platform.isAndroid) {
+      redirectUrl = Uri.parse('com.yourapp://auth');
+    } else if (Platform.isIOS) {
+      redirectUrl = Uri.parse('com.yourapp://auth');
+    } else {
+      throw Exception('Unsupported platform');
+    }
+
+    await Web3AuthFlutter.init(Web3AuthOptions(
+      clientId: clientId,
+      network: Network.sapphire_devnet, // Change to mainnet for production
+      redirectUrl: redirectUrl,
+    ));
   }
 
   Future<void> signInWithGoogle() async {
     try {
-      // Show loading indicator
-      Get.dialog(
-        const Center(
-          child: CircularProgressIndicator(),
+      isLoading.value = true;
+
+      final Web3AuthResponse response = await Web3AuthFlutter.login(
+        LoginParams(
+          loginProvider: Provider.google,
         ),
-        barrierDismissible: false,
       );
+      print(response);
+      privateKey.value = response.privKey;
 
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        Get.back(); // Close loading dialog
-        return;
-      }
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await _auth.signInWithCredential(credential);
-      Get.back(); // Close loading dialog
-      Get.offAllNamed('/home'); // Navigate to home page after successful login
+      // Navigate to home page after successful login
+      Get.offAllNamed('/home');
     } catch (e) {
-      Get.back(); // Close loading dialog
-      print('Error signing in with Google: $e'); // For debugging
       Get.snackbar(
         'Error',
-        'Failed to sign in with Google. Please try again.',
+        'Failed to sign in with Google.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
       );
+    } finally {
+      isLoading.value = false;
     }
   }
 
   Future<void> signOut() async {
     try {
-      await _googleSignIn.signOut();
-      await _auth.signOut();
+      await Web3AuthFlutter.logout();
+      privateKey.value = null;
       Get.offAllNamed('/login');
     } catch (e) {
       Get.snackbar(
-        'Error signing out',
-        e.toString(),
+        'Error',
+        'Failed to sign out.',
         snackPosition: SnackPosition.BOTTOM,
       );
     }
