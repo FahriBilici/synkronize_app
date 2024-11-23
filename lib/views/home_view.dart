@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dating_view.dart';
 import 'social_view.dart';
 import 'profile_view.dart';
+import 'events_view.dart';
+import 'messages_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -14,9 +16,11 @@ class _HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
+    ProfileView(),
     DatingView(),
     SocialView(),
-    ProfileView(),
+    EventsView(),
+    MessagesView(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,6 +36,10 @@ class _HomeViewState extends State<HomeView> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Dating',
           ),
@@ -40,12 +48,17 @@ class _HomeViewState extends State<HomeView> {
             label: 'Social',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.event),
+            label: 'Events',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message),
+            label: 'Messages',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.deepPurple,
+        unselectedItemColor: Colors.grey, // Ensure unselected items are visible
         onTap: _onItemTapped,
       ),
     );

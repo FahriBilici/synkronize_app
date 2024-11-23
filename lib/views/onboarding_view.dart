@@ -33,7 +33,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         curve: Curves.easeIn,
       );
     } else {
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/stake_solana');
     }
   }
 
