@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:synkronize_app/controllers/firestore_controller.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -37,7 +39,8 @@ class ProfileView extends StatelessWidget {
                     radius: 16,
                     backgroundColor: Colors.deepPurple,
                     child: IconButton(
-                      icon: const Icon(Icons.edit, size: 16, color: Colors.white),
+                      icon:
+                          const Icon(Icons.edit, size: 16, color: Colors.white),
                       onPressed: () {
                         // Add edit functionality here
                       },
@@ -99,7 +102,8 @@ class ProfileView extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.deepPurple,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

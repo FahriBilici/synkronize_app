@@ -8,10 +8,10 @@ import 'firestore_controller.dart';
 import 'dart:io';
 
 class AuthController extends GetxController {
-  final RxBool isLoading = false.obs;
-  Rx<String?> privateKey = Rx<String?>(null);
+  var isLoading = false.obs;
+  var privateKey = ''.obs;
+  var currentUserEmail = ''.obs; // Add this line to track user email
 
-  // Add this line to access FirestoreController
   final FirestoreController firestoreController =
       Get.find<FirestoreController>();
 
@@ -50,15 +50,16 @@ class AuthController extends GetxController {
           loginProvider: Provider.google,
         ),
       );
-      privateKey.value = response.privKey;
+      privateKey.value = response.privKey ?? '';
 
       String? userEmail = response.userInfo?.email;
+      currentUserEmail.value = userEmail ?? ''; // Store the email
 
       // Check if user exists
-      bool userExists =
-          await firestoreController.checkUserExists(userEmail ?? '');
+      String? existingUserId =
+          await firestoreController.getUserDocId(userEmail ?? '');
 
-      if (!userExists) {
+      if (existingUserId == null) {
         // Only save if user doesn't exist
         Map<String, dynamic> userInfo = {
           "email": userEmail,
@@ -73,7 +74,7 @@ class AuthController extends GetxController {
       print(e);
       Get.snackbar(
         'Error',
-        'Failed to sign in with Google.',
+        'Failed to sign in with Google',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -84,7 +85,7 @@ class AuthController extends GetxController {
   Future<void> signOut() async {
     try {
       await Web3AuthFlutter.logout();
-      privateKey.value = null;
+      privateKey.value = "";
       Get.offAllNamed('/login');
     } catch (e) {
       Get.snackbar(

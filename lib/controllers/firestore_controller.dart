@@ -4,24 +4,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  var userId = ''.obs; // Add this line to track user ID
 
-  // Save user info to Firestore with auto-generated ID
+  // Modified saveUserInfo function that returns document ID
   Future<String> saveUserInfo(Map<String, dynamic> userInfo) async {
-    // Create document reference with auto-generated ID
-    DocumentReference docRef = firestore.collection('users').doc();
-
-    // Get the auto-generated ID
-    String userId = docRef.id;
-
-    // Save data with the ID included
-    await docRef.set({
+    String docId = userInfo['email'] ?? ''; // Using email as document ID
+    await firestore.collection('users').doc(docId).set({
       'email': userInfo['email'],
       'name': userInfo['name'],
-      'userId': userId,
       'createdAt': FieldValue.serverTimestamp(),
+      // Add other fields you want to save
     });
+    userId.value = docId; // Store the user ID
+    return docId;
+  }
 
-    return userId;
+  // Add this function to get user doc ID by email
+  Future<String?> getUserDocId(String email) async {
+    try {
+      var doc = await firestore.collection('users').doc(email).get();
+      if (doc.exists) {
+        userId.value = doc.id; // Store the user ID
+        return doc.id;
+      }
+      return null;
+    } catch (e) {
+      print('Error getting user doc ID: $e');
+      return null;
+    }
   }
 
   // Add data to Firestore
