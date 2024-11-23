@@ -20,49 +20,25 @@ class HomeView extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Welcome to Dating App!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+        child: Obx(() {
+          final privateKey = authController.privateKey.value;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Your Private Key:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'This is a placeholder home screen.',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+              Text(
+                privateKey ?? 'No key generated',
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
-                // Add functionality later
-                Get.snackbar(
-                  'Coming Soon',
-                  'This feature will be implemented soon!',
-                  snackPosition: SnackPosition.BOTTOM,
-                );
-              },
-              child: const Text('Start Matching'),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add functionality later
-          Get.snackbar(
-            'Coming Soon',
-            'Chat feature will be implemented soon!',
-            snackPosition: SnackPosition.BOTTOM,
+            ],
           );
-        },
-        child: const Icon(Icons.chat),
+        }),
       ),
     );
   }

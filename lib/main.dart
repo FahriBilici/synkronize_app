@@ -12,7 +12,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  Get.put(AuthController()); // Initialize AuthController
+  final authController = Get.put(AuthController());
+  await authController.initWeb3Auth();
 
   runApp(const MyApp());
 }
@@ -71,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
