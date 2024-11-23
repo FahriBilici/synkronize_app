@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "629501785872",
+    "project_id": "hackathum24mun-67",
+    "storage_bucket": "hackathum24mun-67.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629501785872:android:f741644c92e37c39c6d795",
+        "android_client_info": {
+          "package_name": "com.synkronize.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUTK4WrIEDBUFn3XB2Iti-iC2W-9uZowQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
