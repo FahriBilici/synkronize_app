@@ -43,6 +43,7 @@ dependencies:
   solana: ^0.31.0
   web3dart: ^2.7.3
   shared_preferences: ^2.3.3
+  cloud_firestore: ^5.5.0
 
 dev_dependencies:
   flutter_test:
