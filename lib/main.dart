@@ -9,6 +9,7 @@ import 'views/onboarding_view.dart';
 import 'views/dating_view.dart';
 import 'views/social_view.dart';
 import 'views/profile_view.dart';
+import 'views/stake_solana_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/dating', page: () => const DatingView()),
         GetPage(name: '/social', page: () => const SocialView()),
         GetPage(name: '/profile', page: () => const ProfileView()),
+        GetPage(name: '/stake_solana', page: () => const StakeSolanaView()),
       ],
     );
   }
