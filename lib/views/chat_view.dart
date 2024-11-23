@@ -12,6 +12,7 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView> {
   final TextEditingController _controller = TextEditingController();
   bool _isButtonActive = false;
+  final List<Map<String, String>> _messages = [];
 
   @override
   void initState() {
@@ -21,6 +22,24 @@ class _ChatViewState extends State<ChatView> {
         _isButtonActive = _controller.text.isNotEmpty;
       });
     });
+
+    // Add predefined messages
+    if (widget.sender == 'Alice') {
+      _messages.add({'sender': 'other', 'text': 'Hi there!'});
+    } else if (widget.sender == 'Bob') {
+      _messages.add({'sender': 'other', 'text': 'Hello!'});
+    } else if (widget.sender == 'Charlie') {
+      _messages.add({'sender': 'other', 'text': 'Good morning!'});
+    }
+  }
+
+  void _sendMessage() {
+    if (_controller.text.isNotEmpty) {
+      setState(() {
+        _messages.add({'sender': 'me', 'text': _controller.text});
+        _controller.clear();
+      });
+    }
   }
 
   @override
@@ -39,11 +58,31 @@ class _ChatViewState extends State<ChatView> {
         child: Column(
           children: [
             Flexible(
-              child: ListView(
+              child: ListView.builder(
                 padding: const EdgeInsets.all(8.0),
-                children: const [
-                  // Display chat messages here
-                ],
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  final message = _messages[index];
+                  final isMe = message['sender'] == 'me';
+                  return Align(
+                    alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                    child: Container(
+                      padding: const EdgeInsets.all(12.0),
+                      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                      decoration: BoxDecoration(
+                        color: isMe ? Colors.blue[100] : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Text(
+                        message['text']!,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: isMe ? Colors.black : Colors.black87,
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             Padding(
@@ -70,11 +109,7 @@ class _ChatViewState extends State<ChatView> {
                     IconButton(
                       icon: const Icon(Icons.send),
                       color: _isButtonActive ? Colors.blue : Colors.grey,
-                      onPressed: _isButtonActive
-                          ? () {
-                        // Send message functionality
-                      }
-                          : null,
+                      onPressed: _isButtonActive ? _sendMessage : null,
                     ),
                   ],
                 ),
