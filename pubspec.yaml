@@ -38,6 +38,8 @@ dependencies:
   get: ^4.6.6
   firebase_auth: ^5.3.3
   google_sign_in: ^6.2.2
+  sign_in_button: ^3.2.0
+  web3auth_flutter: ^5.0.4
 
 dev_dependencies:
   flutter_test:

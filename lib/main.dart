@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
 import 'firebase_options.dart';
+import 'controllers/auth_controller.dart';
+import 'views/login_view.dart';
+import 'views/home_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  Get.put(AuthController()); // Initialize AuthController
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return GetMaterialApp(
+      title: 'Dating App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/login',
+      getPages: [
+        GetPage(name: '/login', page: () => const LoginView()),
+        GetPage(
+            name: '/home', page: () => const HomeView()), // Add your home view
+      ],
     );
   }
 }
