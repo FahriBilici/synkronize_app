@@ -14,7 +14,7 @@ class StakeSolanaView extends StatelessWidget {
     websocketUrl: Uri.parse('wss://api.devnet.solana.com'),
   );
 
-  Future<void> _stakeSOL() async {
+  Future<void> _stakeSOL(BuildContext context) async {
     try {
       final AuthController authController = Get.find<AuthController>();
 
@@ -69,6 +69,32 @@ class StakeSolanaView extends StatelessWidget {
       final validators = await _getValidators();
       final firstValidator = validators.split(',')[0].trim();
       //await _stakeToValidator(firstValidator, keypair);
+
+      // Show the snackbar
+      Get.snackbar(
+        'Success',
+        'Stake transaction was successful!',
+      );
+
+      // Show CircularProgressIndicator for 2 seconds
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+
+      // Wait for 2 seconds
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Close the dialog
+      Navigator.of(context).pop();
+
+      // Navigate to the next screen
+      Get.offAllNamed('/home');
     } catch (e) {
       print('Detailed error: $e');
       Get.snackbar(
@@ -195,7 +221,7 @@ class StakeSolanaView extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: _stakeSOL,
+              onPressed: () => _stakeSOL(context),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.deepPurple,
