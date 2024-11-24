@@ -4,28 +4,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  var userId = ''.obs; // Add this line to track user ID
+  var userId = ''.obs;
 
-  // Modified saveUserInfo function that returns document ID
   Future<String> saveUserInfo(Map<String, dynamic> userInfo) async {
-    String docId = userInfo['email'] ?? ''; // Using email as document ID
+    String docId = userInfo['email'] ?? '';
     await firestore.collection('users').doc(docId).set({
       'email': userInfo['email'],
       'name': userInfo['name'],
       'createdAt': FieldValue.serverTimestamp(),
       'profileImageUrl': userInfo['profileImageUrl'],
-      // Add other fields you want to save
     });
-    userId.value = docId; // Store the user ID
+    userId.value = docId;
     return docId;
   }
 
-  // Add this function to get user doc ID by email
   Future<String?> getUserDocId(String email) async {
     try {
       var doc = await firestore.collection('users').doc(email).get();
       if (doc.exists) {
-        userId.value = doc.id; // Store the user ID
+        userId.value = doc.id;
         return doc.id;
       }
       return null;
@@ -35,23 +32,19 @@ class FirestoreController extends GetxController {
     }
   }
 
-  // Add data to Firestore
   Future<void> addData(String collection, Map<String, dynamic> data) async {
     await firestore.collection(collection).add(data);
   }
 
-  // Update data in Firestore
   Future<void> updateData(
       String collection, String docId, Map<String, dynamic> data) async {
     await firestore.collection(collection).doc(docId).update(data);
   }
 
-  // Delete data from Firestore
   Future<void> deleteData(String collection, String docId) async {
     await firestore.collection(collection).doc(docId).delete();
   }
 
-  // Get stream of data from Firestore
   Stream<QuerySnapshot> getData(String collection) {
     return firestore.collection(collection).snapshots();
   }
@@ -64,5 +57,23 @@ class FirestoreController extends GetxController {
         .get();
 
     return query.docs.isNotEmpty;
+  }
+
+  // New function to save user's onboarding questions and answers, as well as personal information like age
+  Future<void> saveUserOnboardingInfo(String email, Map<String, dynamic> onboardingInfo) async {
+    try {
+      List<Map<String, String>> questionsAndAnswers = [];
+      Map<String, dynamic> questions = onboardingInfo['questions'];
+      questions.forEach((question, answer) {
+        questionsAndAnswers.add({'question': question, 'answer': answer});
+      });
+
+      await firestore.collection('users').doc(email).update({
+        'age': onboardingInfo['age'],
+        'onboardingQuestions': questionsAndAnswers,
+      });
+    } catch (e) {
+      print('Error saving user onboarding info: $e');
+    }
   }
 }

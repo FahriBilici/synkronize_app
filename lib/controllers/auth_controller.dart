@@ -57,7 +57,7 @@ class AuthController extends GetxController {
 
       // Check if user exists
       String? existingUserId =
-          await firestoreController.getUserDocId(userEmail ?? '');
+      await firestoreController.getUserDocId(userEmail ?? '');
 
       if (existingUserId == null) {
         // Only save if user doesn't exist
@@ -70,7 +70,7 @@ class AuthController extends GetxController {
         await firestoreController.saveUserInfo(userInfo);
       }
 
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/onboarding'); // Redirect to onboarding page
     } catch (e) {
       print(e);
       Get.snackbar(
