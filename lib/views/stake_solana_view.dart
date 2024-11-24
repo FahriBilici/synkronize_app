@@ -1,4 +1,3 @@
-/*
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solana/dto.dart';
@@ -220,5 +219,3 @@ class StakeSolanaView extends StatelessWidget {
     );
   }
 }
-
- */

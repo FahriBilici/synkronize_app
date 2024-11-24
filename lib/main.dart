@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/dating', page: () => const DatingView()),
         GetPage(name: '/social', page: () => const SocialView()),
         GetPage(name: '/profile', page: () => ProfileView()),
-        // GetPage(name: '/stake_solana', page: () => StakeSolanaView()),
+        GetPage(name: '/stake_solana', page: () => StakeSolanaView()),
       ],
     );
   }
