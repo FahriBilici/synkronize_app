@@ -137,17 +137,6 @@ class _ChatViewState extends State<ChatView> {
               ),
             ),
             Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: const Offset(0, -1),
-                  ),
-                ],
-              ),
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
