@@ -68,7 +68,7 @@ class StakeSolanaView extends StatelessWidget {
 
       final validators = await _getValidators();
       final firstValidator = validators.split(',')[0].trim();
-      await _stakeToValidator(firstValidator, keypair);
+      //await _stakeToValidator(firstValidator, keypair);
     } catch (e) {
       print('Detailed error: $e');
       Get.snackbar(
@@ -87,86 +87,83 @@ class StakeSolanaView extends StatelessWidget {
     return validators.current[0].votePubkey; // Get first active validator
   }
 
-  Future<void> _stakeToValidator(
-      String validatorAddress, Ed25519HDKeyPair keypair) async {
-    try {
-      // Create stake account
-      final stakeAccount = await Ed25519HDKeyPair.random();
+  // Future<void> _stakeToValidator(
+  //     String validatorAddress, Ed25519HDKeyPair keypair) async {
+  //   try {
+  //     // Create stake account
+  //     final stakeAccount = await Ed25519HDKeyPair.random();
 
-      // Calculate rent exempt balance
-      final rentExemption = await client.rpcClient
-          .getMinimumBalanceForRentExemption(StakeProgram.neededAccountSpace);
+  //     // Calculate rent exempt balance
+  //     final rentExemption = await client.rpcClient
+  //         .getMinimumBalanceForRentExemption(StakeProgram.neededAccountSpace);
 
-      // Create stake account transaction
-      final createStakeAccTransaction = SystemInstruction.createAccount(
-        fundingAccount: keypair.publicKey,
-        newAccount: stakeAccount.publicKey,
-        lamports:
-            rentExemption + (0.1 * lamportsPerSol).toInt(), // 0.1 SOL + rent
-        space: StakeProgram.neededAccountSpace,
-        owner: Ed25519HDPublicKey.fromBase58(StakeProgram.programId),
-      );
+  //     // Create stake account transaction
+  //     final createStakeAccTransaction = SystemInstruction.createAccount(
+  //       fundingAccount: keypair.publicKey,
+  //       newAccount: stakeAccount.publicKey,
+  //       lamports:
+  //           rentExemption + (0.1 * lamportsPerSol).toInt(), // 0.1 SOL + rent
+  //       space: StakeProgram.neededAccountSpace,
+  //       owner: Ed25519HDPublicKey.fromBase58(StakeProgram.programId),
+  //     );
 
-      // Initialize stake instruction
-      final initializeStakeInst = StakeProgram.initialize(
-        stakeAccount.pubkey,
-        Authorized(
-          staker: keypair.publicKey.toBase58(),
-          withdrawer: keypair.publicKey.toBase58(),
-        ),
-      );
+  //     // Initialize stake instruction
+  //     final initializeStakeInst = StakeProgram.initialize(
+  //       stakeAccount.address,
+  //       Authorized(
+  //         staker: keypair.publicKey.toBase58(),
+  //         withdrawer: keypair.publicKey.toBase58(),
+  //       ),
+  //     );
 
-      // Delegate stake instruction
+  //     // Delegate stake instruction
 
-      final delegateStakeInst = StakeInstruction.delegateStake(
-          stake: stakeAccount.publicKey,
-          authority: keypair.publicKey,
-          vote: Ed25519HDPublicKey.fromBase58(validatorAddress),
-          config: Ed25519HDPublicKey.fromBase58(
-            'StakeConfig11111111111111111111111111111111',
-          ) // Add the required config parameter
-          );
+  //     final delegateStakeInst = StakeInstruction.delegateStake(
+  //         stake: stakeAccount.publicKey,
+  //         authority: keypair.publicKey,
+  //         vote: Ed25519HDPublicKey.fromBase58(validatorAddress),
+  //         config: Ed25519HDPublicKey.fromBase58(
+  //           'StakeConfig11111111111111111111111111111111',
+  //         ) // Add the required config parameter
+  //         );
 
-      // Combine instructions into transaction
-      // Get recent blockhash
-      final recentBlockhash = await client.rpcClient.getLatestBlockhash();
-      final blockhash = recentBlockhash.blockhash;
+  //     // Combine instructions into transaction
+  //     // Get recent blockhash
+  //     final recentBlockhash = await client.rpcClient.getLatestBlockhash();
 
-      // Create message with instructions
-      final message = Message(
-        instructions: [
-          createStakeAccTransaction,
-          initializeStakeInst,
-          delegateStakeInst,
-        ],
-        recentBlockhash: blockhash,
-        feePayer: keypair.publicKey,
-      );
+  //     // Create message with instructions
+  //     final message = Message(
+  //       instructions: [
+  //         createStakeAccTransaction,
+  //         initializeStakeInst,
+  //         delegateStakeInst,
+  //       ],
+  //     );
 
-      // Sign and send transaction
-      final signature = await client.sendAndConfirmTransaction(
-        message: message,
-        signers: [keypair, stakeAccount],
-        commitment: Commitment.confirmed,
-      );
+  //     // Sign and send transaction
+  //     final signature = await client.sendAndConfirmTransaction(
+  //       message: message,
+  //       signers: [keypair, stakeAccount],
+  //       commitment: Commitment.confirmed,
+  //     );
 
-      print('Stake transaction signature: $signature');
-      Get.snackbar(
-        'Success',
-        'Stake transaction was successful!',
-      );
+  //     print('Stake transaction signature: $signature');
+  //     Get.snackbar(
+  //       'Success',
+  //       'Stake transaction was successful!',
+  //     );
 
-      // Navigate to home
-      Get.offAllNamed('/home');
-    } catch (e) {
-      print('Staking error: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to stake SOL: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
-  }
+  //     // Navigate to home
+  //     Get.offAllNamed('/home');
+  //   } catch (e) {
+  //     print('Staking error: $e');
+  //     Get.snackbar(
+  //       'Error',
+  //       'Failed to stake SOL: ${e.toString()}',
+  //       snackPosition: SnackPosition.BOTTOM,
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
