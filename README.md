@@ -1,6 +1,6 @@
-# synkronize_app
+# Synkronize
 
-A new Flutter project.
+Next generation socializing app
 
 ## Getting Started
 
