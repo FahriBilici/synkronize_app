@@ -6,6 +6,7 @@ class OnboardingController extends GetxController {
   final FirestoreController firestoreController = Get.find<FirestoreController>();
 
   Future<void> saveOnboardingInfo(String email, Map<String, dynamic> onboardingInfo) async {
+    print(onboardingInfo);
     try {
       await firestoreController.saveUserOnboardingInfo(email, onboardingInfo);
     } catch (e) {

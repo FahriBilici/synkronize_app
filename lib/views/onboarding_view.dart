@@ -58,7 +58,9 @@ class _OnboardingViewState extends State<OnboardingView> {
   void _saveOnboardingInfo() async {
     String email = _authController.currentUserEmail.value;
     Map<String, dynamic> onboardingInfo = {
+      'name': _nameController.text,
       'age': _ageController.text,
+      'gender': _genderController.text,
       'questions': _answers,
     };
 

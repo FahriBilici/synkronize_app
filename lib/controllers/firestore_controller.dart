@@ -69,7 +69,9 @@ class FirestoreController extends GetxController {
       });
 
       await firestore.collection('users').doc(email).update({
+        'name': onboardingInfo['name'],
         'age': onboardingInfo['age'],
+        'gender': onboardingInfo['gender'],
         'onboardingQuestions': questionsAndAnswers,
       });
     } catch (e) {
