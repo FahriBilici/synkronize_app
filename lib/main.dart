@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       initialBinding: AuthBinding(), // Add this line
       initialRoute: '/login',
       getPages: [
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/dating', page: () => const DatingView()),
         GetPage(name: '/social', page: () => const SocialView()),
         GetPage(name: '/profile', page: () => ProfileView()),
-        GetPage(name: '/stake_solana', page: () => StakeSolanaView()),
+        // GetPage(name: '/stake_solana', page: () => StakeSolanaView()),
       ],
     );
   }
