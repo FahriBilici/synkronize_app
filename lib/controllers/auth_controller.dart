@@ -70,7 +70,7 @@ class AuthController extends GetxController {
         await firestoreController.saveUserInfo(userInfo);
       }
 
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/onboarding');
     } catch (e) {
       print(e);
       Get.snackbar(
