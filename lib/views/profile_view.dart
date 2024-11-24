@@ -141,27 +141,6 @@ class ProfileView extends StatelessWidget {
                 )),
               ],
             ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                // Add edit functionality here
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.deepPurple,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Edit Profile',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
           ],
         ),
       ),
