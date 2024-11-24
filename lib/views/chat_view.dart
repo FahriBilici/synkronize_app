@@ -29,6 +29,7 @@ class _ChatViewState extends State<ChatView> {
       _messages.add({'sender': 'other', 'text': 'Hi there!'});
     } else if (widget.sender == 'Bob') {
       _messages.add({'sender': 'other', 'text': 'Hello!'});
+      _messages.add({'sender': 'me', 'text': 'Hello!'});
     } else if (widget.sender == 'Charlie') {
       _messages.add({'sender': 'other', 'text': 'Good morning!'});
     }

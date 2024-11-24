@@ -2,38 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'chat_view.dart';
 
-class MessagesView extends StatelessWidget {
+class MessagesView extends StatefulWidget {
   const MessagesView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> messages = [
-      {
-        'sender': 'Alice',
-        'message': 'Hi there!',
-        'image': 'https://static.vecteezy.com/system/resources/thumbnails/004/899/680/small_2x/beautiful-blonde-woman-with-makeup-avatar-for-a-beauty-salon-illustration-in-the-cartoon-style-vector.jpg',
-        'time': '10:30 AM',
-        'unread': 2,
-        'isOnline': true,
-      },
-      {
-        'sender': 'Bob',
-        'message': 'Hello!',
-        'image': 'https://media.istockphoto.com/id/1332100919/de/vektor/m%C3%A4nner-ikone-schwarzes-symbol-personensymbol.jpg?s=612x612&w=0&k=20&c=B18829X05YkUnhCWemZmNjOPekogsD7zQX23ATFS6dQ=',
-        'time': '9:45 AM',
-        'unread': 0,
-        'isOnline': false,
-      },
-      {
-        'sender': 'Charlie',
-        'message': 'Good morning!',
-        'image': 'https://media.istockphoto.com/id/1332100919/de/vektor/m%C3%A4nner-ikone-schwarzes-symbol-personensymbol.jpg?s=612x612&w=0&k=20&c=B18829X05YkUnhCWemZmNjOPekogsD7zQX23ATFS6dQ=',
-        'time': 'Yesterday',
-        'unread': 1,
-        'isOnline': true,
-      },
-    ];
+  State<MessagesView> createState() => _MessagesViewState();
+}
 
+class _MessagesViewState extends State<MessagesView> {
+  final List<Map<String, dynamic>> messages = [
+    {
+      'sender': 'Alice',
+      'message': 'Hi there!',
+      'image': 'https://static.vecteezy.com/system/resources/thumbnails/004/899/680/small_2x/beautiful-blonde-woman-with-makeup-avatar-for-a-beauty-salon-illustration-in-the-cartoon-style-vector.jpg',
+      'time': '10:30 AM',
+      'unread': 1,
+      'isOnline': true,
+    },
+    {
+      'sender': 'Bob',
+      'message': 'Hello!',
+      'image': 'https://media.istockphoto.com/id/1332100919/de/vektor/m%C3%A4nner-ikone-schwarzes-symbol-personensymbol.jpg?s=612x612&w=0&k=20&c=B18829X05YkUnhCWemZmNjOPekogsD7zQX23ATFS6dQ=',
+      'time': '9:45 AM',
+      'unread': 0,
+      'isOnline': false,
+    },
+    {
+      'sender': 'Charlie',
+      'message': 'Good morning!',
+      'image': 'https://media.istockphoto.com/id/1332100919/de/vektor/m%C3%A4nner-ikone-schwarzes-symbol-personensymbol.jpg?s=612x612&w=0&k=20&c=B18829X05YkUnhCWemZmNjOPekogsD7zQX23ATFS6dQ=',
+      'time': 'Yesterday',
+      'unread': 1,
+      'isOnline': true,
+    },
+  ];
+
+  void _markAsRead(int index) {
+    setState(() {
+      messages[index]['unread'] = 0;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -98,6 +109,7 @@ class MessagesView extends StatelessWidget {
           final message = messages[index];
           return InkWell(
             onTap: () {
+              _markAsRead(index);
               Get.to(() => ChatView(
                 sender: message['sender']!,
                 imageUrl: message['image']!,
