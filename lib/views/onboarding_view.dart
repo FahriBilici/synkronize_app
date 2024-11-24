@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controllers/onboarding_controller.dart';
+import '../controllers/auth_controller.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -10,8 +12,10 @@ class OnboardingView extends StatefulWidget {
 
 class _OnboardingViewState extends State<OnboardingView> {
   final PageController _pageController = PageController();
-  int _currentPage = 0;
+  final OnboardingController _onboardingController = Get.find<OnboardingController>();
+  final AuthController _authController = Get.find<AuthController>();
 
+  int _currentPage = 0;
   final List<Map<String, String>> _questions = [
     {'question': 'What\'s your ideal way to spend a weekend?'},
     {'question': 'How do you usually handle conflicts?'},
@@ -19,6 +23,11 @@ class _OnboardingViewState extends State<OnboardingView> {
     {'question': 'Which type of activity excites you most?'},
     {'question': 'How do you prefer to plan your life?'},
   ];
+
+  final Map<String, String> _answers = {};
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
 
   void _onPageChanged(int page) {
     setState(() {
@@ -33,7 +42,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         curve: Curves.easeIn,
       );
     } else {
-      Get.offAllNamed('/stake_solana');
+      _saveOnboardingInfo();
     }
   }
 
@@ -44,6 +53,19 @@ class _OnboardingViewState extends State<OnboardingView> {
         curve: Curves.easeIn,
       );
     }
+  }
+
+  void _saveOnboardingInfo() async {
+    String email = _authController.currentUserEmail.value;
+    Map<String, dynamic> onboardingInfo = {
+      'name': _nameController.text,
+      'age': _ageController.text,
+      'gender': _genderController.text,
+      'questions': _answers,
+    };
+
+    await _onboardingController.saveOnboardingInfo(email, onboardingInfo);
+    Get.offAllNamed('/stake_solana');
   }
 
   @override
@@ -58,7 +80,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         itemCount: _questions.length + 1,
         itemBuilder: (context, index) {
           if (index < _questions.length) {
-            return _buildQuestionPage(_questions[index]['question']!);
+            return _buildQuestionPage(_questions[index]['question']!, index);
           } else {
             return _buildFinalPage();
           }
@@ -97,7 +119,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  Widget _buildQuestionPage(String question) {
+  Widget _buildQuestionPage(String question, int index) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -114,6 +136,9 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             const SizedBox(height: 20),
             TextField(
+              onChanged: (value) {
+                _answers[question] = value;
+              },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Your answer',
@@ -142,6 +167,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             const SizedBox(height: 20),
             TextField(
+              controller: _nameController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Name',
@@ -149,6 +175,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             const SizedBox(height: 20),
             TextField(
+              controller: _ageController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Age',
@@ -156,6 +183,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             const SizedBox(height: 20),
             TextField(
+              controller: _genderController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Gender',

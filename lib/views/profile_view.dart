@@ -5,32 +5,28 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:synkronize_app/controllers/firestore_controller.dart';
+import 'package:synkronize_app/controllers/profile_controller.dart';
 
 class ProfileView extends StatelessWidget {
-  final FirestoreController firestoreController =
-      Get.find<FirestoreController>();
+  final FirestoreController firestoreController = Get.find<FirestoreController>();
+  final ProfileController profileController = Get.put(ProfileController());
   final ImagePicker _picker = ImagePicker();
   final storage = FirebaseStorage.instance;
 
+  ProfileView({super.key});
+
   Future<void> uploadImage() async {
     try {
-      // Pick image from gallery
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image == null) return;
 
-      // Create a reference to the location you want to upload to in Firebase Storage
       final String userId = firestoreController.userId.value;
       final storageRef = storage.ref().child('profile_images/$userId.jpg');
 
-      // Upload the file
       await storageRef.putFile(File(image.path));
-
-      // Get the download URL
       final imageUrl = await storageRef.getDownloadURL();
 
-      // Update the user's profile in Firestore with the image URL
-      await firestoreController
-          .updateData('users', userId, {'profileImageUrl': imageUrl});
+      await firestoreController.updateData('users', userId, {'profileImageUrl': imageUrl});
     } catch (e) {
       print('Error uploading image: $e');
       Get.snackbar('Error', 'Failed to upload image');
@@ -39,6 +35,9 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Fetch user profile when the view is built
+    profileController.fetchUserProfile();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -66,18 +65,17 @@ class ProfileView extends StatelessWidget {
                     CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.grey[300],
-                      backgroundImage:
-                          imageUrl != null ? NetworkImage(imageUrl) : null,
+                      backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,
                       child: imageUrl == null
                           ? CircleAvatar(
-                              radius: 48,
-                              backgroundColor: Colors.white,
-                              child: Icon(
-                                Icons.camera_alt,
-                                size: 60,
-                                color: Colors.grey[700],
-                              ),
-                            )
+                        radius: 48,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.camera_alt,
+                          size: 60,
+                          color: Colors.grey[700],
+                        ),
+                      )
                           : null,
                     ),
                     Positioned(
@@ -101,71 +99,47 @@ class ProfileView extends StatelessWidget {
               },
             ),
             const SizedBox(height: 20),
-            // Basic Details
-            const Text(
-              'Sarah',
-              style: TextStyle(
+            Obx(() => Text(
+              profileController.name.value,
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
-            ),
+            )),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Age: ',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                Text(
-                  '28',
-                  style: TextStyle(
+                Obx(() => Text(
+                  profileController.age.value,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                SizedBox(width: 20),
-                Text(
+                )),
+                const SizedBox(width: 20),
+                const Text(
                   'Gender: ',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                Text(
-                  'Female',
-                  style: TextStyle(
+                Obx(() => Text(
+                  profileController.gender.value,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
+                )),
               ],
-            ),
-            const SizedBox(height: 30),
-            // Edit Button
-            ElevatedButton(
-              onPressed: () {
-                // Add edit functionality here
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.deepPurple,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Edit Profile',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
             ),
           ],
         ),

@@ -71,6 +71,7 @@ class AuthController extends GetxController {
       }
 
       Get.offAllNamed('/onboarding');
+      Get.offAllNamed('/onboarding'); // Redirect to onboarding page
     } catch (e) {
       print(e);
       Get.snackbar(
