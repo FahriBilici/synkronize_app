@@ -12,7 +12,8 @@ class OnboardingView extends StatefulWidget {
 
 class _OnboardingViewState extends State<OnboardingView> {
   final PageController _pageController = PageController();
-  final OnboardingController _onboardingController = Get.find<OnboardingController>();
+  final OnboardingController _onboardingController =
+      Get.find<OnboardingController>();
   final AuthController _authController = Get.find<AuthController>();
 
   int _currentPage = 0;
@@ -65,7 +66,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     };
 
     await _onboardingController.saveOnboardingInfo(email, onboardingInfo);
-    Get.offAllNamed('/home');
+    Get.offAllNamed('/stake_solana');
   }
 
   @override
@@ -105,9 +106,8 @@ class _OnboardingViewState extends State<OnboardingView> {
             Expanded(
               child: ElevatedButton(
                 onPressed: _nextPage,
-                child: Text(_currentPage == _questions.length
-                    ? 'Finish'
-                    : 'Next'),
+                child:
+                    Text(_currentPage == _questions.length ? 'Finish' : 'Next'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
