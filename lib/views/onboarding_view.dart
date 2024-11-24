@@ -65,7 +65,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     };
 
     await _onboardingController.saveOnboardingInfo(email, onboardingInfo);
-    Get.offAllNamed('/stake_solana');
+    Get.offAllNamed('/home');
   }
 
   @override

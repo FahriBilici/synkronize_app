@@ -41,11 +41,11 @@ class _HomeViewState extends State<HomeView> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
-            label: 'Dating',
+            label: 'Dates',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
-            label: 'Social',
+            label: 'Friends',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.event),
